@@ -76,15 +76,15 @@ def main():
     model, test_time_pool = (model, False) if args.no_test_pool else apply_test_time_pool(model, config)
 
     if args.num_gpu > 1:
-        model = torch.nn.DataParallel(model, device_ids=list(range(args.num_gpu))).cpu()
+        model = torch.nn.DataParallel(model, device_ids=list(range(args.num_gpu))).cuda()
     else:
-        model = model.cpu()
+        model = model.cuda()
 
     loader = create_loader(
         Dataset(args.data),
         input_size=config['input_size'],
         batch_size=args.batch_size,
-        use_prefetcher=False,
+        use_prefetcher=True,
         interpolation=config['interpolation'],
         mean=config['mean'],
         std=config['std'],
@@ -99,7 +99,7 @@ def main():
     topk_ids = []
     with torch.no_grad():
         for batch_idx, (input, _) in enumerate(loader):
-            input = input.cpu()
+            input = input.cuda()
             labels = model(input)
             topk = labels.topk(k)[1]
             topk_ids.append(topk.cpu().numpy())

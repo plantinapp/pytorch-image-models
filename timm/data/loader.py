@@ -63,8 +63,8 @@ class PrefetchLoader:
                  re_count=1,
                  re_num_splits=0):
         self.loader = loader
-        self.mean = torch.tensor([x * 255 for x in mean]).cpu().view(1, 3, 1, 1)
-        self.std = torch.tensor([x * 255 for x in std]).cpu().view(1, 3, 1, 1)
+        self.mean = torch.tensor([x * 255 for x in mean]).cuda().view(1, 3, 1, 1)
+        self.std = torch.tensor([x * 255 for x in std]).cuda().view(1, 3, 1, 1)
         self.fp16 = fp16
         if fp16:
             self.mean = self.mean.half()
@@ -76,7 +76,7 @@ class PrefetchLoader:
             self.random_erasing = None
 
     def __iter__(self):
-        stream = torch.cpu.Stream()
+        stream = torch.cuda.Stream()
         first = True
 
         for next_input, next_target in self.loader:
