@@ -42,7 +42,6 @@ def parse_args() -> argparse.Namespace:
 
 
 def run_command(command):
-    print("Executing {}".format(subprocess.list2cmdline(command)))
     process = subprocess.Popen(command, stdout=subprocess.PIPE)
     full_out = ''
     while True:
@@ -98,8 +97,7 @@ def create_model_map():
                 model_arch = models[100]
 
         training_process_output = run_command([
-            "./distributed_train.sh",
-            str(argv.num_gpus), class_root,
+            f"./distributed_train.sh {argv.num_gpus}", class_root,
             "--model", model_arch,
             "--img-size", str(argv.img_size),
             "--num-classes", str(class_size),
