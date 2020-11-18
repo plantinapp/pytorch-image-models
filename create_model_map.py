@@ -34,7 +34,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=str)
     parser.add_argument("--target", type=str)
-    parser.add_argument("--lib-path", type=str)
     parser.add_argument("--classes-path", type=str, default=None)
     parser.add_argument("--img-size", type=int, default=None)
     parser.add_argument("--num-gpus", type=int, default=1)
@@ -42,13 +41,24 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
+def run_command(command):
+    process = subprocess.Popen(command, stdout=subprocess.PIPE)
+    full_out = ''
+    while True:
+        output = process.stdout.readline()
+        full_out += output
+        if output == '' and process.poll() is not None:
+            break
+        if output:
+            print(output.strip())
+    return full_out
+
+
 def create_model_map():
     argv = parse_args()
 
     source = Path(argv.source)
     target = Path(argv.target)
-
-    lib_path = Path(argv.lib_path)
 
     result_path = target.joinpath('class_map.json')
     model_artefacts_path = target.joinpath('artefacts')
@@ -86,8 +96,8 @@ def create_model_map():
             else:
                 model_arch = models[100]
 
-        training_process = subprocess.run([
-            lib_path.joinpath("distributed_train.sh"),
+        training_process_output = run_command([
+            "./distributed_train.sh",
             str(argv.num_gpus), class_root,
             "--model", model_arch,
             "--img-size", str(argv.img_size),
@@ -105,14 +115,13 @@ def create_model_map():
             "--color-jitter", "0.7",
             "--aa", "v0",
             "--use-multi-epochs-loader",
-        ], capture_output=True)
+        ])
 
-        output = training_process.stdout.decode("utf-8")
+        output = training_process_output
         interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output)
         if interesting_output is None:
             print(f"Bad output for {clazz}, terminating")
             print(output)
-            print(training_process.stderr.decode("utf-8"))
             exit(-1)
 
         results = interesting_output.group()
