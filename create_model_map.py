@@ -121,7 +121,6 @@ def create_model_map():
         interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output)
         if interesting_output is None:
             print(f"Bad output for {clazz}, terminating")
-            print(output)
             exit(-1)
 
         results = interesting_output.group()
