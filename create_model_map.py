@@ -45,7 +45,7 @@ def run_command(command):
     process = subprocess.Popen(command, stdout=subprocess.PIPE)
     full_out = ''
     while True:
-        output = process.stdout.readline()
+        output = process.stdout.readline().decode("utf-8")
         full_out += output
         if output == '' and process.poll() is not None:
             break
@@ -97,7 +97,8 @@ def create_model_map():
                 model_arch = models[100]
 
         training_process_output = run_command([
-            f"./distributed_train.sh {argv.num_gpus}", class_root,
+            "./distributed_train.sh",
+            str(argv.num_gpus), class_root,
             "--model", model_arch,
             "--img-size", str(argv.img_size),
             "--num-classes", str(class_size),
