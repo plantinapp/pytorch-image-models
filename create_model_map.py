@@ -103,7 +103,7 @@ def create_model_map():
             "--img-size", str(argv.img_size),
             "--num-classes", str(class_size),
             "--output", model_artefacts_path,
-            "--j", str(argv.num_gpus),
+            "-j", str(argv.num_gpus),
             "--sched", "tanh",
             "--epochs", "25",
             "--warmup-epochs", "5",
