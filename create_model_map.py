@@ -42,6 +42,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def run_command(command):
+    print("Executing {}".format(subprocess.list2cmdline(command)))
     process = subprocess.Popen(command, stdout=subprocess.PIPE)
     full_out = ''
     while True:
