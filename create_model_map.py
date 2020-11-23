@@ -98,7 +98,7 @@ def create_model_map():
             else:
                 model_arch = models[100]
 
-        training_process_output = run_command([
+        params = [
             "./distributed_train.sh",
             str(argv.num_gpus), class_root,
             "--model", model_arch,
@@ -115,9 +115,12 @@ def create_model_map():
             "--batch-size", "16",
             "--pretrained",
             "--color-jitter", "0.7",
-            "--aa", "v0",
-            "--use-multi-epochs-loader",
-        ])
+            "--aa", "v0"
+        ]
+        if argv.num_gpus > 1:
+            params.append("--use-multi-epochs-loader")
+
+        training_process_output = run_command(params)
 
         output = training_process_output
         interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output)
