@@ -81,6 +81,8 @@ def create_model_map():
         sub_classes.sort()
         class_size = len(sub_classes)
 
+        print(f"Processing class {clazz} with {class_size} subclasses")
+
         if class_size == 1:
             class_map[clazz] = {
                 "type": singular_type,
