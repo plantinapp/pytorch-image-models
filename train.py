@@ -587,6 +587,7 @@ def main():
                 if saver.cmp(best_metric, save_metric):
                     _logger.info(f"Metric is no longer improving [BEST: {best_metric}, CURRENT: {save_metric}]"
                                  f"\nFinishing training process")
+                    break
 
     except KeyboardInterrupt:
         pass
