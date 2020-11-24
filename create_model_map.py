@@ -47,7 +47,6 @@ def run_command(command):
     while True:
         output = process.stdout.readline().decode("utf-8")
         full_out += output
-        print(full_out)
         if output == '' and process.poll() is not None:
             break
         if output:
@@ -141,7 +140,7 @@ def create_model_map():
         classes_txt_path = target_path.joinpath(classes_file)
         class_map_json_path = target_path.joinpath(class_map_file)
 
-        shutil.copy(output_model_artifact_path, model_final_path)
+        shutil.copy2(output_model_artifact_path, model_final_path)
 
         with classes_txt_path.open("w") as f:
             f.writelines("\n".join(sub_classes))
