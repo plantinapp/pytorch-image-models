@@ -61,6 +61,7 @@ def create_model_map():
     target = Path(argv.target)
 
     result_path = target.joinpath('class_map.json')
+    result_temp_path = target.joinpath('class_map.temp.json')
     model_artefacts_path = target.joinpath('artefacts')
 
     class_map = {}
@@ -70,6 +71,7 @@ def create_model_map():
 
     classes = get_classes(argv.classes_path)
 
+    i = 0
     for clazz in classes:
         if clazz in class_map:
             continue
@@ -81,7 +83,7 @@ def create_model_map():
         sub_classes.sort()
         class_size = len(sub_classes)
 
-        print(f"Processing class {clazz} with {class_size} subclasses")
+        print(f"[{i}/{len(classes)}]: Processing class {clazz} with {class_size} subclasses")
 
         if class_size == 1:
             class_map[clazz] = {
@@ -123,7 +125,8 @@ def create_model_map():
         training_process_output = run_command(params)
 
         output = training_process_output
-        interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output, re.M)
+        interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output,
+                                       re.M)
         if interesting_output is None:
             print(f"Bad output for {clazz}, terminating")
             print(output)
@@ -147,7 +150,8 @@ def create_model_map():
         with classes_txt_path.open("w") as f:
             f.writelines("\n".join(sub_classes))
 
-        sub_class_map = {sub_classes[i]: sub_classes[i].replace("_", " ") for i in range(0, class_size)}
+        sub_class_map = {sub_classes[i]: sub_classes[i].replace("_", " ").replace("×", "").replace("  ", " ")
+                         for i in range(0, class_size)}
         with class_map_json_path.open("w") as f:
             json.dump(sub_class_map, f)
 
@@ -156,6 +160,9 @@ def create_model_map():
             "value": target_path.as_posix(),
             "confidence": round(precision, 2)
         }
+
+        with result_path.open("w") as f:
+            json.dump(result_temp_path, f)
 
     with result_path.open("w") as f:
         json.dump(class_map, f)
