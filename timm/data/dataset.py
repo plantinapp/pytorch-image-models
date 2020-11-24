@@ -30,7 +30,7 @@ def find_images_and_targets(folder, types=IMG_EXTENSIONS, class_to_idx=None, lea
     for root, subdirs, files in os.walk(folder, topdown=False):
         rel_path = os.path.relpath(root, folder) if (root != folder) else ''
         label = os.path.basename(rel_path) if leaf_name_only else rel_path.replace(os.path.sep, '_')
-        if len(files) == 0:
+        if len(files) == 0 and label != '':
             label_set.add(label)
         else:
             for f in files:
