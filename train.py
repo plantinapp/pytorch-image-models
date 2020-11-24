@@ -584,11 +584,11 @@ def main():
                 save_metric = eval_metrics[eval_metric]
                 best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
 
-                if saver.cmp(best_metric, save_metric):
-                    _logger.info(f"Metric is no longer improving [BEST: {best_metric}, CURRENT: {save_metric}]"
-                                 f"\nFinishing training process")
-                    if epoch > 10:
-                        break
+                # if saver.cmp(best_metric, save_metric):
+                #     _logger.info(f"Metric is no longer improving [BEST: {best_metric}, CURRENT: {save_metric}]"
+                #                  f"\nFinishing training process")
+                #     if epoch > 15:
+                #         break
 
     except KeyboardInterrupt:
         pass
