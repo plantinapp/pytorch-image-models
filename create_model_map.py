@@ -163,8 +163,8 @@ def create_model_map():
             "confidence": round(precision, 2)
         }
 
-        with result_path.open("w") as f:
-            json.dump(result_temp_path, f)
+        with result_temp_path.open("w") as f:
+            json.dump(class_map, f)
 
     with result_path.open("w") as f:
         json.dump(class_map, f)
