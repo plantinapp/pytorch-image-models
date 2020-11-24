@@ -123,9 +123,10 @@ def create_model_map():
         training_process_output = run_command(params)
 
         output = training_process_output
-        interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output)
+        interesting_output = re.search("\\*\\*\\* Best metric: <.+?>, epoch: <.+?>, path: <.+?> \\*\\*\\*", output, re.M)
         if interesting_output is None:
             print(f"Bad output for {clazz}, terminating")
+            print(output)
             exit(-1)
 
         results = interesting_output.group()
