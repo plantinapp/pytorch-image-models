@@ -594,8 +594,10 @@ def main():
     except KeyboardInterrupt:
         pass
     if best_metric is not None:
-        _logger.info(
-            '*** Best metric: <{0:.2f}>, epoch: <{1}>, path: <{2}> ***'.format(best_metric, best_epoch, output_dir))
+        message = '*** Best metric: <{0:.2f}>, epoch: <{1}>, path: <{2}> ***'\
+            .format(best_metric, best_epoch, output_dir)
+        _logger.info(message)
+        print(message)
 
 
 def train_epoch(
