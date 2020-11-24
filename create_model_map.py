@@ -147,6 +147,8 @@ def create_model_map():
             model_final_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(output_model_artifact_path, model_final_path)
 
+        shutil.rmtree(Path(path))
+
         with classes_txt_path.open("w") as f:
             f.writelines("\n".join(sub_classes))
 
