@@ -83,7 +83,7 @@ def create_model_map():
         sub_classes.sort()
         class_size = len(sub_classes)
 
-        print(f"[{i}/{len(classes)}]: Processing class {clazz} with {class_size} subclasses")
+        print(f"[{++i}/{len(classes)}]: Processing class {clazz} with {class_size} subclasses")
 
         if class_size == 1:
             class_map[clazz] = {
