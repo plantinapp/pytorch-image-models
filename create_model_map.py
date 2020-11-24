@@ -47,6 +47,7 @@ def run_command(command):
     while True:
         output = process.stdout.readline().decode("utf-8")
         full_out += output
+        print(full_out)
         if output == '' and process.poll() is not None:
             break
         if output:
