@@ -140,6 +140,8 @@ def create_model_map():
         classes_txt_path = target_path.joinpath(classes_file)
         class_map_json_path = target_path.joinpath(class_map_file)
 
+        if not model_final_path.exists():
+            model_final_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(output_model_artifact_path, model_final_path)
 
         with classes_txt_path.open("w") as f:
