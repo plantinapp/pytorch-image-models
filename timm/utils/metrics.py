@@ -25,7 +25,6 @@ class AverageMeter:
 def accuracy(output, target, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
     maxk = max(topk)
-    maxk = max(maxk, output.size(0))
     batch_size = target.size(0)
     _, pred = output.topk(maxk, 1, True, True)
     pred = pred.t()
