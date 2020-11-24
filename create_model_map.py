@@ -160,6 +160,7 @@ def create_model_map():
         class_map[clazz] = {
             "type": model_type,
             "value": target_path.as_posix(),
+            "model": model_arch,
             "confidence": round(precision, 2)
         }
 
