@@ -671,7 +671,7 @@ def train_epoch(
                     'Data: {data_time.val:.3f} ({data_time.avg:.3f})'.format(
                         epoch,
                         batch_idx, len(loader),
-                        100. * batch_idx / min(0, last_idx),
+                        100. * batch_idx / max(1, last_idx),
                         loss=losses_m,
                         batch_time=batch_time_m,
                         rate=input.size(0) * args.world_size / batch_time_m.val,
